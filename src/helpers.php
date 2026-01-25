@@ -107,7 +107,7 @@ if (! function_exists('sendNotFoundResponse')) {
         return app('response')
             ->fail()
             ->code(Response::HTTP_NOT_FOUND)
-            ->view(config('response.views.errors.404', 'admin::errors.404'))
+            ->view(config('response.views.errors.404', 'errors.404'))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -122,7 +122,7 @@ if (! function_exists('sendServerErrorResponse')) {
         return app('response')
             ->fail()
             ->code(Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->view(config('response.views.errors.500', 'admin::errors.500'))
+            ->view(config('response.views.errors.500', 'errors.500'))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -137,7 +137,7 @@ if (! function_exists('sendMaintenanceModeResponse')) {
         return app('response')
             ->fail()
             ->code(Response::HTTP_SERVICE_UNAVAILABLE)
-            ->view(config('response.views.errors.503', 'admin::errors.503'))
+            ->view(config('response.views.errors.503', 'errors.503'))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -169,7 +169,7 @@ if (! function_exists('sendMethodNotAllowedResponse')) {
         return app('response')
             ->fail()
             ->code(Response::HTTP_METHOD_NOT_ALLOWED)
-            ->view(config('response.views.errors.405', 'admin::errors.405'))
+            ->view(config('response.views.errors.405', 'errors.405'))
             ->withCustomMessage($message)
             ->send();
     }

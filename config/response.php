@@ -47,10 +47,10 @@ return [
     */
     'views'             => [
         'errors'        => [
-            '404'       => 'admin::errors.404',
-            '405'       => 'admin::errors.405',
-            '500'       => 'admin::errors.500',
-            '503'       => 'admin::errors.503',
+            '404'       => 'errors.404',
+            '405'       => 'errors.405',
+            '500'       => 'errors.500',
+            '503'       => 'errors.503',
         ],
     ],
 
