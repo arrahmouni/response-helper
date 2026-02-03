@@ -153,9 +153,6 @@ if (! function_exists('sendDontHavePermissionResponse')) {
             ->fail()
             ->code(Response::HTTP_FORBIDDEN)
             ->withDefaultMessage($message)
-            ->withData([
-                'error' => trans(config('response.translations.namespace', 'response') . '::' . config('response.translations.file', 'messages') . '.' . config('response.translations.keys.web', 'web_response_messages') . '.dont_have_permission'),
-            ])
             ->send();
     }
 }
@@ -170,7 +167,7 @@ if (! function_exists('sendMethodNotAllowedResponse')) {
             ->fail()
             ->code(Response::HTTP_METHOD_NOT_ALLOWED)
             ->view(config('response.views.errors.405', 'errors.405'))
-            ->withCustomMessage($message)
+            ->withDefaultMessage($message)
             ->send();
     }
 }
