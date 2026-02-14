@@ -183,6 +183,7 @@ if(! function_exists('sendTooManyRequestsResponse')) {
             ->code(Response::HTTP_TOO_MANY_REQUESTS)
             ->withDefaultMessage($message)
             ->send();
+    }
 }
 
 if (! function_exists('sendSuccessInternalResponse')) {
