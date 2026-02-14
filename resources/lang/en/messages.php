@@ -28,6 +28,7 @@ return [
         'record_not_found'      => 'Record not found',
         'method_not_allowed'    => 'We\'re sorry, but the request method you used is not allowed for this URL.',
         'login_required'        => 'You need to login to access this page.',
+        'too_many_requests'     => 'You have exceeded the allowed number of attempts. Please try again later.',
     ],
     'api_response_messages'         => [
         'data_loaded_successfully'  => 'Data loaded successfully.',

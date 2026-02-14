@@ -172,6 +172,19 @@ if (! function_exists('sendMethodNotAllowedResponse')) {
     }
 }
 
+if(! function_exists('sendTooManyRequestsResponse')) {
+    /*
+    | Too many requests response (429).
+    */
+    function sendTooManyRequestsResponse(string $message = 'too_many_requests')
+    {
+        return app('response')
+            ->fail()
+            ->code(Response::HTTP_TOO_MANY_REQUESTS)
+            ->withDefaultMessage($message)
+            ->send();
+}
+
 if (! function_exists('sendSuccessInternalResponse')) {
     /*
     | Internal success response (always returns array).
