@@ -49,6 +49,7 @@ return [
         'errors'        => [
             '404'       => 'errors.404',
             '405'       => 'errors.405',
+            '429'       => 'errors.429',
             '500'       => 'errors.500',
             '503'       => 'errors.503',
         ],

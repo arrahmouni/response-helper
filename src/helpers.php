@@ -181,6 +181,7 @@ if(! function_exists('sendTooManyRequestsResponse')) {
         return app('response')
             ->fail()
             ->code(Response::HTTP_TOO_MANY_REQUESTS)
+            ->view(config('response.views.errors.429', 'errors.429'))
             ->withDefaultMessage($message)
             ->send();
     }
