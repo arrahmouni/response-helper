@@ -1,18 +1,9 @@
 <?php
 
+use ArRahmouni\ResponseHelper\RequestAdminArea;
 use Illuminate\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
-use ArRahmouni\ResponseHelper\RequestAdminArea;
 
-/*
-|--------------------------------------------------------------------------
-| Global Helper Functions
-|--------------------------------------------------------------------------
-|
-| Legacy compatibility helpers. They delegate to `app('response')` which is
-| provided by the package service provider.
-|
-*/
 if (! function_exists('resolveWebErrorView')) {
     /**
      * Resolve the Blade view for an HTTP error page (admin control panel vs public site).
@@ -43,6 +34,16 @@ if (! function_exists('resolveWebErrorView')) {
         return "errors.{$code}";
     }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Global Helper Functions
+|--------------------------------------------------------------------------
+|
+| Legacy compatibility helpers. They delegate to `app('response')` which is
+| provided by the package service provider.
+|
+*/
 if (! function_exists('debugEnabled')) {
     /*
     | Check if Laravel debug mode is enabled.
@@ -133,12 +134,12 @@ if (! function_exists('sendNotFoundResponse')) {
     /*
     | Not found response.
     */
-    function sendNotFoundResponse(string $message = 'record_not_found')
+    function sendNotFoundResponse(string $message = 'record_not_found', ?string $webErrorContext = null)
     {
         return app('response')
             ->fail()
             ->code(Response::HTTP_NOT_FOUND)
-            ->view(config('response.views.errors.404', 'errors.404'))
+            ->view(resolveWebErrorView('404', $webErrorContext))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -148,12 +149,12 @@ if (! function_exists('sendServerErrorResponse')) {
     /*
     | Server error response.
     */
-    function sendServerErrorResponse(string|null $message = null)
+    function sendServerErrorResponse(string|null $message = null, ?string $webErrorContext = null)
     {
         return app('response')
             ->fail()
             ->code(Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->view(config('response.views.errors.500', 'errors.500'))
+            ->view(resolveWebErrorView('500', $webErrorContext))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -163,12 +164,12 @@ if (! function_exists('sendMaintenanceModeResponse')) {
     /*
     | Maintenance mode response (503).
     */
-    function sendMaintenanceModeResponse(string $message = 'under_maintenance')
+    function sendMaintenanceModeResponse(string $message = 'under_maintenance', ?string $webErrorContext = null)
     {
         return app('response')
             ->fail()
             ->code(Response::HTTP_SERVICE_UNAVAILABLE)
-            ->view(config('response.views.errors.503', 'errors.503'))
+            ->view(resolveWebErrorView('503', $webErrorContext))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -178,13 +179,18 @@ if (! function_exists('sendDontHavePermissionResponse')) {
     /*
     | Forbidden response (403).
     */
-    function sendDontHavePermissionResponse(string $message = 'dont_have_permission')
+    function sendDontHavePermissionResponse(string $message = 'dont_have_permission', ?string $webErrorContext = null)
     {
-        return app('response')
+        $builder = app('response')
             ->fail()
             ->code(Response::HTTP_FORBIDDEN)
-            ->withDefaultMessage($message)
-            ->send();
+            ->withDefaultMessage($message);
+
+        if (array_key_exists('403', config('response.views.errors', []))) {
+            $builder->view(resolveWebErrorView('403', $webErrorContext));
+        }
+
+        return $builder->send();
     }
 }
 
@@ -192,12 +198,12 @@ if (! function_exists('sendMethodNotAllowedResponse')) {
     /*
     | Method not allowed response (405).
     */
-    function sendMethodNotAllowedResponse(string $message = 'method_not_allowed')
+    function sendMethodNotAllowedResponse(string $message = 'method_not_allowed', ?string $webErrorContext = null)
     {
         return app('response')
             ->fail()
             ->code(Response::HTTP_METHOD_NOT_ALLOWED)
-            ->view(config('response.views.errors.405', 'errors.405'))
+            ->view(resolveWebErrorView('405', $webErrorContext))
             ->withDefaultMessage($message)
             ->send();
     }
@@ -207,12 +213,12 @@ if(! function_exists('sendTooManyRequestsResponse')) {
     /*
     | Too many requests response (429).
     */
-    function sendTooManyRequestsResponse(string $message = 'too_many_requests')
+    function sendTooManyRequestsResponse(string $message = 'too_many_requests', ?string $webErrorContext = null)
     {
         return app('response')
             ->fail()
             ->code(Response::HTTP_TOO_MANY_REQUESTS)
-            ->view(config('response.views.errors.429', 'errors.429'))
+            ->view(resolveWebErrorView('429', $webErrorContext))
             ->withDefaultMessage($message)
             ->send();
     }
