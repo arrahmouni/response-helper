@@ -45,13 +45,33 @@ return [
     | View mappings used by helper functions for non-ajax web responses.
     |
     */
-    'views'             => [
-        'errors'        => [
-            '404'       => 'errors.404',
-            '405'       => 'errors.405',
-            '429'       => 'errors.429',
-            '500'       => 'errors.500',
-            '503'       => 'errors.503',
+    'views'                 => [
+        'default_context'   => 'front',
+        'errors'            => [
+            '403'           => [
+                'admin'     => 'admin::errors.403',
+                'front'     => 'front::errors.403',
+            ],
+            '404'           => [
+                'admin'     => 'admin::errors.404',
+                'front'     => 'front::errors.404',
+            ],
+            '405'           => [
+                'admin'     => 'admin::errors.405',
+                'front'     => 'front::errors.405',
+            ],
+            '429'           => [
+                'admin'     => 'admin::errors.429',
+                'front'     => 'front::errors.429',
+            ],
+            '500'           => [
+                'admin'     => 'admin::errors.500',
+                'front'     => 'front::errors.500',
+            ],
+            '503'           => [
+                'admin'     => 'admin::errors.503',
+                'front'     => 'front::errors.503',
+            ],
         ],
     ],
 

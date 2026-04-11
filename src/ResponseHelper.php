@@ -298,7 +298,7 @@ class ResponseHelper
                 ->to($this->data['redirect'])
                 ->with('message', $this->data);
         } elseif (isset($this->data['view']) && ! empty($this->data['view'])) {
-            return response()->view($this->data['view'], $this->data['data']);
+            return response()->view($this->data['view'], $this->data['data'] ?? [], $this->code);
         }
 
         return back()
