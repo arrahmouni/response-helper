@@ -2,6 +2,7 @@
 
 use Illuminate\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use ArRahmouni\ResponseHelper\RequestAdminArea;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,36 @@ use Symfony\Component\HttpFoundation\Response;
 | provided by the package service provider.
 |
 */
+if (! function_exists('resolveWebErrorView')) {
+    /**
+     * Resolve the Blade view for an HTTP error page (admin control panel vs public site).
+     */
+    function resolveWebErrorView(string $code, ?string $webErrorContext = null): string
+    {
+        if ($webErrorContext === null && app()->bound('request') && request()) {
+            $webErrorContext = RequestAdminArea::isAdminControlPanel(request())
+                ? 'admin'
+                : 'front';
+        }
+
+        $webErrorContext ??= config('response.views.default_context', 'front');
+
+        $resolved = config("response.views.errors.{$code}");
+
+        if (is_string($resolved)) {
+            return $resolved;
+        }
+
+        if (is_array($resolved)) {
+            return $resolved[$webErrorContext]
+                ?? $resolved['front']
+                ?? $resolved['admin']
+                ?? "errors.{$code}";
+        }
+
+        return "errors.{$code}";
+    }
+}
 if (! function_exists('debugEnabled')) {
     /*
     | Check if Laravel debug mode is enabled.
